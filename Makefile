@@ -112,7 +112,7 @@ pretty:
 	   --indent-col1-comments --pad-oper --pad-header --align-pointer=type \
 	   --align-reference=type --add-brackets --convert-tabs --close-templates \
 	   --lineend=linux --preserve-date --suffix=none --formatted \
-	   src/json.hpp src/json.hpp.re2c test/src/*.cpp \
+	   src/json.hpp src/json.hpp.re2c test/src/*.cpp benchmarks/src/*.cpp \
 	   benchmarks/benchmarks.cpp doc/examples/*.cpp
 
 
