@@ -6,28 +6,19 @@ using json = nlohmann::json;
 
 void parse_json_file(benchmark::State& state, const std::string& filename)
 {
-    std::stringstream istr;
+    std::string input;
     {
         // read file into string stream
+        std::stringstream istr;
         std::ifstream input_file(filename);
         istr << input_file.rdbuf();
-        input_file.close();
-
-        // read the stream once
-        json j;
-        j << istr;
-        // clear flags and rewind
-        istr.clear();
-        istr.seekg(0);
+        input = istr.str();
     }
-    const auto filesize = istr.str().size();
+    const auto filesize = input.size();
 
     while (state.KeepRunning())
     {
-        istr.clear();
-        istr.seekg(0);
-        json j;
-        j << istr;
+        json j = json::parse(input);
     }
     state.SetBytesProcessed(state.iterations() * filesize);
 }
@@ -38,10 +29,8 @@ void dump_json_file(benchmark::State& state, const std::string& filename, bool p
 
     json j;
     {
-        // read file into string stream
+        // parse the input file
         std::ifstream input_file(filename);
-
-        // read the stream once
         json j;
         j << input_file;
     }

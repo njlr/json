@@ -8,6 +8,7 @@ fuzz-testing
 *.gcda
 
 working
+build
 
 doc/xml
 doc/html
