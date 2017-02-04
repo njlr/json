@@ -7,9 +7,8 @@ target_link_libraries(json_benchmark benchmark)
 target_link_libraries(json_benchmark ${JSON_TARGET_NAME})
 
 # we need extra libraries on Windows
-if(WIN32)
-  find_library(SHLWAPI Shlwapi.lib) 
-  target_link_libraries(benchmark ${SHLWAPI})
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  target_link_libraries(json_benchmark Shlwapi)
 endif()
 
 set_target_properties(json_benchmark PROPERTIES
