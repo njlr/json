@@ -8,7 +8,8 @@ target_link_libraries(json_benchmark ${JSON_TARGET_NAME})
 
 # we need extra libraries on Windows
 if(WIN32)
-  target_link_libraries(benchmark shlwapi)
+  find_library(SHLWAPI Shlwapi.lib) 
+  target_link_libraries(benchmark ${SHLWAPI})
 endif()
 
 set_target_properties(json_benchmark PROPERTIES
