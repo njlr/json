@@ -1,7 +1,7 @@
 /*
     __ _____ _____ _____
  __|  |   __|     |   | |  JSON for Modern C++ (test suite)
-|  |  |__   |  |  | | | |  version 2.0.10
+|  |  |__   |  |  | | | |  version 2.1.0
 |_____|_____|_____|_|___|  https://github.com/nlohmann/json
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>.
@@ -594,6 +594,32 @@ TEST_CASE("parser class")
                           "missing or wrong low surrogate");
         CHECK_THROWS_WITH(json::parse("\"\\uD80C\\uFFFF\""),
                           "missing or wrong low surrogate");
+    }
+
+    SECTION("tests found by mutate++")
+    {
+        // test case to make sure no comma preceeds the first key
+        CHECK_THROWS_AS(json::parser("{,\"key\": false}").parse(), std::invalid_argument);
+        // test case to make sure an object is properly closed
+        CHECK_THROWS_AS(json::parser("[{\"key\": false true]").parse(), std::invalid_argument);
+
+        // test case to make sure the callback is properly evaluated after reading a key
+        {
+            json::parser_callback_t cb = [](int depth, json::parse_event_t event, json & parsed)
+            {
+                if (event == json::parse_event_t::key)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            };
+
+            json x = json::parse("{\"key\": false}", cb);
+            CHECK(x == json::object());
+        }
     }
 
     SECTION("callback function")

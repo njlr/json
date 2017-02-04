@@ -1,7 +1,7 @@
 /*
     __ _____ _____ _____
  __|  |   __|     |   | |  JSON for Modern C++ (test suite)
-|  |  |__   |  |  | | | |  version 2.0.10
+|  |  |__   |  |  | | | |  version 2.1.0
 |_____|_____|_____|_|___|  https://github.com/nlohmann/json
 
 Licensed under the MIT License <http://opensource.org/licenses/MIT>.
@@ -63,9 +63,17 @@ TEST_CASE("regression tests")
 
     SECTION("pull request #71 - handle enum type")
     {
-        enum { t = 0 };
+        enum { t = 0, u = 1};
         json j = json::array();
         j.push_back(t);
+
+        // maybe this is not the place to test this?
+        json j2 = u;
+
+        auto anon_enum_value = j2.get<decltype(u)>();
+        CHECK(u == anon_enum_value);
+
+        static_assert(std::is_same<decltype(anon_enum_value), decltype(u)>::value, "");
 
         j.push_back(json::object(
         {
