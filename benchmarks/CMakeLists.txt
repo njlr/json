@@ -6,6 +6,11 @@ add_executable(json_benchmark "src/json_benchmarks.cpp")
 target_link_libraries(json_benchmark benchmark)
 target_link_libraries(json_benchmark ${JSON_TARGET_NAME})
 
+# we need extra libraries on Windows
+if(WIN32)
+  target_link_libraries(benchmark shlwapi)
+endif()
+
 set_target_properties(json_benchmark PROPERTIES
     CXX_STANDARD 11
     CXX_STANDARD_REQUIRED ON
