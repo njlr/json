@@ -5,4 +5,7 @@ prebuilt_cxx_binary(
   exported_headers = [
     'src/json.hpp',
   ],
+  visbility = [
+    'PUBLIC',
+  ],
 )
